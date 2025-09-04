@@ -5,6 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Yayasan ASIH — Aksi Solidaritas Indonesia Hebat</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Tailwind (utility classes) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,6 +27,73 @@
     <style>
         .nav-blur {
             backdrop-filter: saturate(180%) blur(10px);
+        }
+
+        /* Highlight slider */
+        .highlight-slide {
+            min-height: 60vh;
+            background: linear-gradient(rgba(15, 23, 42, .55), rgba(15, 23, 42, .55)), var(--bg) center/cover no-repeat;
+            color: #fff;
+        }
+
+        @media (min-width: 992px) {
+            .highlight-slide {
+                min-height: 72vh;
+            }
+        }
+
+        /* Social sidebar */
+        .social-sidebar {
+            position: fixed;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1040;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .social-sidebar a {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: .5rem;
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+            transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+            opacity: .95;
+        }
+
+        .social-sidebar a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .2);
+            opacity: 1;
+        }
+
+        .bg-facebook {
+            background: #1877F2;
+        }
+
+        .bg-instagram {
+            background: #C13584;
+        }
+
+        .bg-youtube {
+            background: #FF0000;
+        }
+
+        .bg-tiktok {
+            background: #000;
+        }
+
+        @media (max-width: 767.98px) {
+            .social-sidebar {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -46,12 +119,16 @@
                     <a href="#visi" class="hover:text-brand-600">Visi & Misi</a>
                     <a href="#tujuan" class="hover:text-brand-600">Tujuan</a>
                     <a href="#kegiatan" class="hover:text-brand-600">Kegiatan</a>
+                    <!-- DESKTOP MENU -->
+                    <a href="#pendiri" class="hover:text-brand-600">Pendiri</a>
+
                     <a href="#kontak"
                         class="inline-flex items-center rounded-lg bg-brand-600 px-4 py-2 text-white hover:bg-brand-700">Donasi</a>
                 </div>
                 <!-- Hamburger -->
                 <button id="btnMobile"
-                    class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white">
+                    class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white"
+                    aria-label="Open menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -67,6 +144,9 @@
                 <a href="#visi" class="block py-2">Visi & Misi</a>
                 <a href="#tujuan" class="block py-2">Tujuan</a>
                 <a href="#kegiatan" class="block py-2">Kegiatan</a>
+
+                <!-- MOBILE MENU -->
+                <a href="#pendiri" class="block py-2">Pendiri</a>
                 <a href="#kontak" class="block py-2 text-brand-700 font-semibold">Donasi</a>
             </div>
         </div>
@@ -102,6 +182,73 @@
         </div>
     </section>
 
+    <!-- HIGHLIGHT SLIDER -->
+    <section id="highlight" class="py-6 bg-white">
+        <div id="highlightCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#highlightCarousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#highlightCarousel" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            </div>
+            <div class="carousel-inner">
+
+                <!-- Slide 1: Pusat Bantuan Hukum ASIH -->
+                <div class="carousel-item active">
+                    <!-- ganti assets/slide-law.jpg -->
+                    <div class="highlight-slide d-flex align-items-center" style="--bg:url('assets/slide-law.jpg');">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-lg-7">
+                                    <div class="rounded-3 p-4 p-md-5 bg-white/80 shadow">
+                                        <span class="badge text-bg-danger mb-2">Highlight</span>
+                                        <h3 class="h1 fw-bold mb-3">Pusat Bantuan Hukum ASIH</h3>
+                                        <p class="lead mb-4">Menyediakan layanan konsultasi hukum <b>gratis</b> bagi
+                                            masyarakat yang menghadapi masalah hukum, khususnya kasus <b>perdata</b> dan
+                                            <b>pidana ringan</b>.
+                                        </p>
+                                        <a href="#kontak" class="btn btn-danger btn-lg">Konsultasi Gratis</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Badan Gizi Nasional -->
+                <div class="carousel-item">
+                    <!-- ganti assets/slide-nutrition.jpg -->
+                    <div class="highlight-slide d-flex align-items-center"
+                        style="--bg:url('assets/slide-nutrition.jpg');">
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <div class="col-lg-7">
+                                    <div class="rounded-3 p-4 p-md-5 bg-white/80 shadow">
+                                        <span class="badge text-bg-danger mb-2">Highlight</span>
+                                        <h3 class="h1 fw-bold mb-3">Badan Gizi Nasional</h3>
+                                        <p class="lead mb-4">Inisiatif peningkatan status gizi melalui edukasi gizi
+                                            seimbang, skrining balita & ibu hamil, serta dukungan bahan pangan bergizi
+                                            bagi keluarga rentan.</p>
+                                        <a href="#kontak" class="btn btn-danger btn-lg">Dukung Program</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#highlightCarousel" data-bs-slide="prev"
+                aria-label="Prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#highlightCarousel" data-bs-slide="next"
+                aria-label="Next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </section>
+
     <!-- PENGENALAN -->
     <section id="pengenalan" class="py-16">
         <div class="mx-auto max-w-7xl px-6">
@@ -112,7 +259,7 @@
                         Dibentuk sebagai respon terhadap kebutuhan nyata masyarakat, Yayasan ASIH menjembatani
                         kesenjangan akses
                         pendidikan, layanan sosial-kesehatan, dan keadilan; berfokus pada pembangunan holistik sosial,
-                        spiritual, dan intelektual. :contentReference[oaicite:1]{index=1}
+                        spiritual, dan intelektual.
                     </p>
                 </div>
                 <div class="relative">
@@ -131,8 +278,7 @@
                 <div>
                     <h3 class="text-2xl font-bold mb-3">Visi</h3>
                     <p>Menjadi katalisator terwujudnya masyarakat Indonesia yang adil, makmur, berakhlak, dan
-                        berpendidikan tinggi, menjunjung nilai solidaritas & kemanusiaan.
-                        :contentReference[oaicite:2]{index=2}</p>
+                        berpendidikan tinggi, menjunjung nilai solidaritas & kemanusiaan.</p>
                 </div>
                 <div>
                     <h3 class="text-2xl font-bold mb-3">Misi</h3>
@@ -144,7 +290,7 @@
                         <li class="flex gap-3"><span class="mt-1 h-2 w-2 rounded-full bg-brand-600"></span>Penegakan
                             Keadilan (bantuan hukum & advokasi).</li>
                         <li class="flex gap-3"><span class="mt-1 h-2 w-2 rounded-full bg-brand-600"></span>Peningkatan
-                            Kapasitas Pendidikan. :contentReference[oaicite:3]{index=3}</li>
+                            Kapasitas Pendidikan.</li>
                     </ul>
                 </div>
             </div>
@@ -159,17 +305,17 @@
                 <div class="rounded-2xl bg-white p-6 shadow-soft">
                     <h4 class="font-semibold mb-1">Jangka Pendek (1–3 Tahun)</h4>
                     <p class="text-slate-600">Tiga program percontohan sosial, pendidikan, hukum di satu wilayah
-                        sasaran. :contentReference[oaicite:4]{index=4}</p>
+                        sasaran.</p>
                 </div>
                 <div class="rounded-2xl bg-white p-6 shadow-soft">
                     <h4 class="font-semibold mb-1">Jangka Menengah (3–5 Tahun)</h4>
                     <p class="text-slate-600">Ekspansi ke 5 wilayah & kemitraan strategis dengan ≥10 lembaga/perusahaan.
-                        :contentReference[oaicite:5]{index=5}</p>
+                    </p>
                 </div>
                 <div class="rounded-2xl bg-white p-6 shadow-soft">
                     <h4 class="font-semibold mb-1">Jangka Panjang (5–10 Tahun)</h4>
                     <p class="text-slate-600">Menjadi rujukan nasional & mendirikan pusat riset/pengembangan mandiri.
-                        :contentReference[oaicite:6]{index=6}</p>
+                    </p>
                 </div>
             </div>
         </div>
@@ -223,13 +369,80 @@
                     </ul>
                 </div>
             </div>
-            <p class="sr-only">Semua kegiatan di atas merujuk ke dokumen yayasan. :contentReference[oaicite:7]{index=7}
-            </p>
+        </div>
+    </section>
+
+    <!-- PENDIRI / OWNER -->
+    <section id="pendiri" class="py-16">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold">Para Pendiri</h3>
+                <p class="mt-2 text-slate-600">Tokoh di balik Yayasan ASIH yang menggerakkan kolaborasi sosial, hukum,
+                    dan gizi.</p>
+                <a href="struktur.html"
+                    class="inline-flex items-center gap-2 mt-4 rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white hover:bg-brand-700 shadow-soft">
+                    <i class="bi bi-diagram-3"></i>
+                    Lihat Struktur Organisasi
+                </a>
+
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+                <!-- Card 1 -->
+                <article class="rounded-2xl bg-white p-6 shadow-soft border hover:shadow-lg transition">
+                    <div class="flex flex-col items-center text-center">
+                        <img src="assets/founder-1.jpg" alt="Nurudin, SE.,MM"
+                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow">
+                        <h4 class="mt-4 text-xl font-semibold">Nurudin, SE.,MM</h4>
+                        <p class="text-brand-700 font-medium">Pendiri</p>
+                        <p class="mt-2 text-sm text-slate-600"></p>
+                        <!-- <div class="mt-3 flex items-center gap-3">
+                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="LinkedIn"><i
+                                    class="bi bi-linkedin fs-5"></i></a>
+                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Facebook"><i
+                                    class="bi bi-facebook fs-5"></i></a>
+                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Instagram"><i
+                                    class="bi bi-instagram fs-5"></i></a>
+                        </div> -->
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="rounded-2xl bg-white p-6 shadow-soft border hover:shadow-lg transition">
+                    <div class="flex flex-col items-center text-center">
+                        <img src="assets/founder-2.jpg" alt="Ahmad Sidik, ST"
+                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow">
+                        <h4 class="mt-4 text-xl font-semibold">Ahmad Sidik, ST</h4>
+                        <p class="text-brand-700 font-medium">Pendiri</p>
+                        <!-- <p class="mt-2 text-sm text-slate-600">Fokus pada konsultasi hukum gratis untuk perdata & pidana
+                            ringan, edukasi hak sipil, dan advokasi.</p>
+                        <div class="mt-3 flex items-center gap-3">
+                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="LinkedIn"><i
+                                    class="bi bi-linkedin fs-5"></i></a>
+                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Facebook"><i
+                                    class="bi bi-facebook fs-5"></i></a>
+                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Instagram"><i
+                                    class="bi bi-instagram fs-5"></i></a>
+                        </div> -->
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="rounded-2xl bg-white p-6 shadow-soft border hover:shadow-lg transition">
+                    <div class="flex flex-col items-center text-center">
+                        <img src="assets/founder-3.jpg" alt="Wandoyo. S.H.,M.H"
+                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow">
+                        <h4 class="mt-4 text-xl font-semibold">Wandoyo. S.H.,M.H</h4>
+                        <p class="text-brand-700 font-medium">Pendiri</p>
+
+                    </div>
+                </article>
+            </div>
         </div>
     </section>
 
     <!-- CTA / KONTAK -->
-    <section id="kontak" class="py-16">
+    <section id="kontak" class="bg-slate-50 py-16">
         <div class="mx-auto max-w-4xl px-6 text-center">
             <h3 class="text-3xl font-bold">Mari Berkolaborasi</h3>
             <p class="mt-3 text-slate-600">Bergabung sebagai relawan, mitra, atau donatur untuk memperluas dampak
@@ -249,20 +462,41 @@
     <footer class="border-t bg-white">
         <div class="mx-auto max-w-7xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <img src="assets/logo-asih.png" class="h-8 w-8 rounded-full" alt="">
+                <img src="assets/logo-asih.png" class="h-8 w-8 rounded-full" alt="Logo">
                 <span class="text-sm text-slate-600">© 2025 Yayasan ASIH. All rights reserved.</span>
             </div>
-            <div class="flex items-center gap-4 text-slate-500">
-                <a href="#" aria-label="Facebook" class="hover:text-brand-600">Fb</a>
-                <a href="#" aria-label="Instagram" class="hover:text-brand-600">Ig</a>
-                <a href="#" aria-label="YouTube" class="hover:text-brand-600">Yt</a>
-                <a href="#" aria-label="TikTok" class="hover:text-brand-600">Tk</a>
+            <div class="d-none d-md-flex align-items-center gap-2">
+                <a href="#" class="text-muted small text-decoration-none">Kebijakan Privasi</a>
+                <span class="text-muted">•</span>
+                <a href="#" class="text-muted small text-decoration-none">Syarat & Ketentuan</a>
             </div>
         </div>
     </footer>
 
-    <!-- Effects: navbar background on scroll + mobile menu -->
+    <!-- SIDEBAR SOSIAL -->
+    <div class="social-sidebar" aria-label="Ikon media sosial">
+        <a href="#" class="bg-facebook" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-title="Facebook"
+            aria-label="Facebook">
+            <i class="bi bi-facebook fs-5"></i>
+        </a>
+        <a href="#" class="bg-instagram" target="_blank" rel="noopener" data-bs-toggle="tooltip"
+            data-bs-title="Instagram" aria-label="Instagram">
+            <i class="bi bi-instagram fs-5"></i>
+        </a>
+        <a href="#" class="bg-youtube" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-title="YouTube"
+            aria-label="YouTube">
+            <i class="bi bi-youtube fs-5"></i>
+        </a>
+        <a href="#" class="bg-tiktok" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-title="TikTok"
+            aria-label="TikTok">
+            <i class="bi bi-tiktok fs-5"></i>
+        </a>
+    </div>
+
+    <!-- Bootstrap JS (wajib untuk slider & tooltip) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Navbar effect
         const bar = document.getElementById('topbar');
         const menu = document.getElementById('mobileMenu');
         const btn = document.getElementById('btnMobile');
@@ -277,6 +511,9 @@
         };
         setBar(); window.addEventListener('scroll', setBar);
         btn?.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        // Tooltip init
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
     </script>
 </body>
 
