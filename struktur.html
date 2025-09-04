@@ -9,7 +9,7 @@
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Tailwind -->
+    <!-- Tailwind (utility classes) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,12 +24,148 @@
         }
     </script>
     <style>
+        :root {
+            --line: #cbd5e1;
+        }
+
+        /* warna garis konektor */
+
         .nav-blur {
             backdrop-filter: saturate(180%) blur(10px);
         }
 
         .hero-struct {
             background: linear-gradient(rgba(15, 23, 42, .55), rgba(15, 23, 42, .55)), url('assets/hero.jpg') center/cover no-repeat;
+        }
+
+        /* ===== ORG CHART CONNECTORS (UL/LI tree) ===== */
+        .org,
+        .org ul {
+            padding-left: 0;
+            position: relative;
+        }
+
+        .org ul {
+            padding-top: 30px;
+        }
+
+        .org li {
+            list-style: none;
+            text-align: center;
+            position: relative;
+            padding: 20px 10px 0 10px;
+            float: left;
+            /* penting untuk menyusun anak secara horizontal */
+        }
+
+        .org ul::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        /* garis horizontal kiri/kanan dari anak ke tengah */
+        .org li::before,
+        .org li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            border-top: 2px solid var(--line);
+            width: 50%;
+            height: 20px;
+        }
+
+        .org li::before {
+            right: 50%;
+        }
+
+        .org li::after {
+            left: 50%;
+        }
+
+        /* jika hanya satu anak: sembunyikan garis kiri/kanan */
+        .org li:only-child::before,
+        .org li:only-child::after {
+            display: none;
+        }
+
+        .org li:only-child {
+            padding-top: 0;
+        }
+
+        /* anak pertama/terakhir: potong garis di ujung */
+        .org li:first-child::before {
+            border: none;
+        }
+
+        .org li:last-child::after {
+            border: none;
+        }
+
+        /* garis vertikal dari parent ke baris anak */
+        .org ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 2px solid var(--line);
+            width: 0;
+            height: 20px;
+        }
+
+        /* ===== NODE (card + avatar bulat) ===== */
+        .node {
+            display: inline-block;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            /* slate-200 */
+            border-radius: 16px;
+            padding: 16px 18px;
+            min-width: 210px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+        }
+
+        .node .avatar {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 8px auto;
+            border-radius: 9999px;
+            /* BULAT */
+            background: #e5e7eb;
+            /* abu-abu bila tanpa foto */
+            border: 4px solid #fff;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+            overflow: hidden;
+        }
+
+        .node .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 9999px;
+        }
+
+        .role {
+            font-size: .9rem;
+            color: #64748b;
+        }
+
+        /* slate-500 */
+        .name {
+            font-weight: 600;
+        }
+
+        /* responsif: susun zig-zag jika layar kecil */
+        @media (max-width: 768px) {
+            .node {
+                min-width: 180px;
+            }
+
+            .org li {
+                float: none;
+                display: inline-block;
+            }
         }
     </style>
 </head>
@@ -62,7 +198,7 @@
     <section class="hero-struct text-white pt-24">
         <div class="mx-auto max-w-7xl px-6 py-16 text-center">
             <h1 class="text-4xl font-extrabold tracking-tight">Struktur Organisasi Yayasan ASIH</h1>
-            <p class="mt-3 text-white/90">Gambaran peran dan unit kerja yang mendukung program yayasan.</p>
+            <p class="mt-3 text-white/90">Bagan dengan konektor & avatar bulat untuk setiap posisi.</p>
             <div class="mt-6">
                 <a href="#bagan"
                     class="rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white hover:bg-brand-700 shadow-soft">
@@ -75,122 +211,232 @@
     <!-- BAGAN / STRUKTUR -->
     <main id="bagan" class="py-16">
         <div class="mx-auto max-w-7xl px-6">
-            <!-- Tingkat 1 -->
-            <div class="text-center">
-                <div class="inline-flex items-center gap-3 rounded-2xl bg-white p-6 shadow-soft border">
-                    <img src="assets/logo-asih.png" class="h-12 w-12 rounded-full" alt="">
-                    <div class="text-left">
-                        <h2 class="text-2xl font-bold">Yayasan ASIH</h2>
-                        <p class="text-slate-600">Aksi Solidaritas Indonesia Hebat</p>
-                    </div>
-                </div>
+            <div class="overflow-x-auto">
+                <ul class="org w-max mx-auto">
+                    <!-- Level 1: Pembina -->
+                    <li>
+                        <div class="node" id="pembina">
+                            <div class="avatar">
+                                <img src="assets/pembina-ahmad-sidik.jpg" alt="Ahmad Sidik, S.T"
+                                    onerror="this.remove();">
+                            </div>
+
+                            <div class="role">Pembina</div>
+                            <div class="name">Ahmad Sidik, S.T</div>
+                        </div>
+
+                        <ul>
+                            <!-- Level 2: Pengawas -->
+                            <li>
+                                <div class="node">
+                                    <div class="avatar">
+                                        <img src="assets/pengawas-wandoyo.jpg" alt="Wandoyo, S.H., M.H"
+                                            onerror="this.remove();">
+                                    </div>
+                                    <div class="role">Pengawas</div>
+                                    <div class="name">Wandoyo, S.H., M.H</div>
+                                </div>
+
+                                <ul>
+                                    <!-- Level 3: Pengurus (NODE TUNGGAL) -->
+                                    <li>
+                                        <!-- <div class="node">
+                                            <div class="avatar">
+                                                <img src="assets/pengurus.jpg" alt="Pengurus" onerror="this.remove();">
+                                            </div>
+                                            <div class="role">Pengurus</div>
+                                            <div class="name">—</div>
+                                        </div> -->
+
+                                        <ul>
+                                            <!-- Level 4: Ketua -->
+                                            <li>
+                                                <div class="node">
+                                                    <div class="avatar">
+                                                        <img src="assets/ketua-nurudin.jpg" alt="Nurudin, SE., MM"
+                                                            onerror="this.remove();">
+                                                    </div>
+                                                    <div class="role">Ketua</div>
+                                                    <div class="name">Nurudin, SE., MM</div>
+                                                </div>
+
+                                                <ul>
+                                                    <!-- Level 5: Sekretaris, Bendahara, Divisi-divisi -->
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/sekretaris-nur-haqiqi.jpg"
+                                                                    alt="Nur Haqiqi Istiqomah" onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Sekretaris</div>
+                                                            <div class="name">Nur Haqiqi Istiqomah</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/bendahara-sandra.jpg"
+                                                                    alt="Sandra Dea Eliza" onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Bendahara</div>
+                                                            <div class="name">Sandra Dea Eliza</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-sosmed-sahril.jpg"
+                                                                    alt="Sahril, S.Kom" onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Sosmed</div>
+                                                            <div class="name">Sahril, S.Kom</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-ekonomi-agung.jpg"
+                                                                    alt="Agung Sanjaya" onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Ekonomi</div>
+                                                            <div class="name">Agung Sanjaya</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-keagamaan-jaya.jpg"
+                                                                    alt="Jaya Subur, S.Pd" onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Keagamaan</div>
+                                                            <div class="name">Jaya Subur, S.Pd</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-pendidikan-linda.jpg"
+                                                                    alt="Linda Damayanti, S.E., S.Pd.Aud"
+                                                                    onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Pendidikan</div>
+                                                            <div class="name">Linda Damayanti, S.E., S.Pd.Aud</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-sosial-hernita.jpg"
+                                                                    alt="Hernita Hina Rijayanti S.Pd"
+                                                                    onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Sosial</div>
+                                                            <div class="name">Hernita Hina Rijayanti S.Pd</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-kesehatan-namfin.jpg"
+                                                                    alt="M. Namfin Fathoni S.Kom"
+                                                                    onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Kesehatan</div>
+                                                            <div class="name">M. Namfin Fathoni S.Kom</div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="node">
+                                                            <div class="avatar">
+                                                                <img src="assets/div-hukum-cahyo.jpg"
+                                                                    alt="Moh. Cahyo Fajri" onerror="this.remove();">
+                                                            </div>
+                                                            <div class="role">Divisi Hukum</div>
+                                                            <div class="name">Moh. Cahyo Fajri</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
             </div>
 
-            <!-- connector -->
-            <div class="my-8 flex justify-center">
-                <div class="h-6 w-1 bg-slate-300 rounded-full"></div>
-            </div>
+            <!-- Catatan -->
 
-            <!-- Tingkat 2: Para Pendiri -->
-            <section class="mb-12">
-                <h3 class="text-center text-xl font-semibold mb-6">Pendiri</h3>
-                <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-                    <!-- Founder 1 -->
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border text-center">
-                        <img src="assets/founder-1.jpg" alt="Nurudin, SE.,MM"
-                            class="mx-auto h-24 w-24 rounded-full object-cover ring-4 ring-white shadow">
-                        <h4 class="mt-3 font-semibold">Nurudin, SE.,MM</h4>
-                        <p class="text-brand-700 text-sm">Pendiri</p>
-                    </article>
-                    <!-- Founder 2 -->
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border text-center">
-                        <img src="assets/founder-2.jpg" alt="Ahmad Sidik, ST"
-                            class="mx-auto h-24 w-24 rounded-full object-cover ring-4 ring-white shadow">
-                        <h4 class="mt-3 font-semibold">Ahmad Sidik, ST</h4>
-                        <p class="text-brand-700 text-sm">Pendiri</p>
-                    </article>
-                    <!-- Founder 3 -->
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border text-center">
-                        <img src="assets/founder-3.jpg" alt="Wandoyo. S.H.,M.H"
-                            class="mx-auto h-24 w-24 rounded-full object-cover ring-4 ring-white shadow">
-                        <h4 class="mt-3 font-semibold">Wandoyo. S.H.,M.H</h4>
-                        <p class="text-brand-700 text-sm">Pendiri</p>
-                    </article>
-                </div>
-            </section>
-
-            <!-- connector -->
-            <div class="my-8 flex justify-center">
-                <div class="h-6 w-1 bg-slate-300 rounded-full"></div>
-            </div>
-
-            <!-- Tingkat 3: Unit / Program -->
-            <section>
-                <h3 class="text-center text-xl font-semibold mb-6">Unit & Program</h3>
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border">
-                        <div class="flex items-start gap-3">
-                            <i class="bi bi-balance-scale fs-3 text-danger"></i>
-                            <div>
-                                <h4 class="font-semibold">Pusat Bantuan Hukum ASIH</h4>
-                                <p class="text-sm text-slate-600">Konsultasi hukum gratis bagi masyarakat (perdata &
-                                    pidana ringan), edukasi hak-hak sipil, dan advokasi.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border">
-                        <div class="flex items-start gap-3">
-                            <i class="bi bi-heart-pulse fs-3 text-danger"></i>
-                            <div>
-                                <h4 class="font-semibold">Kesehatan (Badan Gizi Nasional) </h4>
-                                <p class="text-sm text-slate-600">Edukasi gizi seimbang, skrining balita & ibu hamil,
-                                    dukungan bahan pangan bergizi.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border">
-                        <div class="flex items-start gap-3">
-                            <i class="bi bi-people fs-3 text-danger"></i>
-                            <div>
-                                <h4 class="font-semibold">Sosial</h4>
-                                <p class="text-sm text-slate-600">Sehati Peduli, Bank Sampah Komunitas, Donor Darah
-                                    Rutin.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border">
-                        <div class="flex items-start gap-3">
-                            <i class="bi bi-stars fs-3 text-danger"></i>
-                            <div>
-                                <h4 class="font-semibold">Keagamaan</h4>
-                                <p class="text-sm text-slate-600">Majelis Ilmu “Cahaya Hati”, Santunan Yatim & Dhuafa,
-                                    Jumat Berkah.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="rounded-2xl bg-white p-6 shadow-soft border">
-                        <div class="flex items-start gap-3">
-                            <i class="bi bi-mortarboard fs-3 text-danger"></i>
-                            <div>
-                                <h4 class="font-semibold">Pendidikan</h4>
-                                <p class="text-sm text-slate-600">Beasiswa “Cerdas Berani”, Kelas Literasi & Pelatihan
-                                    Vokasi, “Satu Buku Satu Harapan”.</p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Catatan peran/jabatan (opsional) -->
-                <div class="mt-8 rounded-2xl border p-5 bg-slate-50">
-                    <h5 class="font-semibold mb-2">Catatan</h5>
-                    <p class="text-sm text-slate-600">
-                        Silakan sesuaikan jabatan resmi (Pembina, Pengawas, Ketua, Sekretaris, Bendahara, Koordinator
-                        Unit, dsb.)
-                        sesuai SK Yayasan. Komponen di atas hanya template tampilan struktur.
-                    </p>
-                </div>
-            </section>
         </div>
+        <section>
+            <h3 class="text-center text-xl font-semibold mb-6">Unit & Program</h3>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <article class="rounded-2xl bg-white p-6 shadow-soft border">
+                    <div class="flex items-start gap-3">
+                        <i class="bi bi-balance-scale fs-3 text-danger"></i>
+                        <div>
+                            <h4 class="font-semibold">Pusat Bantuan Hukum ASIH</h4>
+                            <p class="text-sm text-slate-600">Konsultasi hukum gratis bagi masyarakat (perdata &
+                                pidana ringan), edukasi hak-hak sipil, dan advokasi.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="rounded-2xl bg-white p-6 shadow-soft border">
+                    <div class="flex items-start gap-3">
+                        <i class="bi bi-heart-pulse fs-3 text-danger"></i>
+                        <div>
+                            <h4 class="font-semibold">Kesehatan (Badan Gizi Nasional) </h4>
+                            <p class="text-sm text-slate-600">Edukasi gizi seimbang, skrining balita & ibu hamil,
+                                dukungan bahan pangan bergizi.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="rounded-2xl bg-white p-6 shadow-soft border">
+                    <div class="flex items-start gap-3">
+                        <i class="bi bi-people fs-3 text-danger"></i>
+                        <div>
+                            <h4 class="font-semibold">Sosial</h4>
+                            <p class="text-sm text-slate-600">Sehati Peduli, Bank Sampah Komunitas, Donor Darah
+                                Rutin.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="rounded-2xl bg-white p-6 shadow-soft border">
+                    <div class="flex items-start gap-3">
+                        <i class="bi bi-stars fs-3 text-danger"></i>
+                        <div>
+                            <h4 class="font-semibold">Keagamaan</h4>
+                            <p class="text-sm text-slate-600">Majelis Ilmu “Cahaya Hati”, Santunan Yatim & Dhuafa,
+                                Jumat Berkah.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="rounded-2xl bg-white p-6 shadow-soft border">
+                    <div class="flex items-start gap-3">
+                        <i class="bi bi-mortarboard fs-3 text-danger"></i>
+                        <div>
+                            <h4 class="font-semibold">Pendidikan</h4>
+                            <p class="text-sm text-slate-600">Beasiswa “Cerdas Berani”, Kelas Literasi & Pelatihan
+                                Vokasi, “Satu Buku Satu Harapan”.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Catatan peran/jabatan (opsional) -->
+
+        </section>
     </main>
 
     <!-- FOOTER -->
@@ -210,6 +456,23 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Saat halaman siap, scroll vertikal ke area bagan & center node Pembina di scroll horizontal
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.querySelector('.overflow-x-auto'); // pembungkus yang bisa di-scroll horizontal
+            const pembina = document.getElementById('pembina');
+            if (!wrapper || !pembina) return;
+
+            // 1) Scroll vertikal ke wrapper (lewati hero), beri offset untuk navbar
+            const y = wrapper.getBoundingClientRect().top + window.pageYOffset - 90; // adjust 90 kalau navbar beda tinggi
+            window.scrollTo({ top: y, behavior: 'auto' });
+
+            // 2) Center-kan Pembina di dalam wrapper secara horizontal
+            const left = pembina.offsetLeft + (pembina.offsetWidth / 2) - (wrapper.clientWidth / 2);
+            wrapper.scrollLeft = Math.max(0, left);
+        });
+    </script>
+
 </body>
 
 </html>
