@@ -12,6 +12,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Tailwind (utility classes) -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Preload hero image for faster LCP -->
+    <link rel="preload" as="image" href="assets/hero.jpg">
+
     <script>
         tailwind.config = {
             theme: {
@@ -24,9 +28,41 @@
             }
         }
     </script>
+
     <style>
-        .nav-blur {
-            backdrop-filter: saturate(180%) blur(10px);
+        /* Navbar glass/solid */
+        :root {
+            --navbar-glass: rgba(255, 255, 255, .58);
+            --navbar-solid: rgba(255, 255, 255, .98);
+            --header-h: 64px;
+            /* fallback, diupdate via JS */
+        }
+
+        #topbar {
+            transition: background-color .2s, box-shadow .2s, border-color .2s;
+        }
+
+        .header-glass {
+            background: var(--navbar-glass);
+            backdrop-filter: saturate(160%) blur(8px);
+            -webkit-backdrop-filter: saturate(160%) blur(8px);
+            border-bottom: 1px solid rgba(15, 23, 42, .06);
+        }
+
+        .header-solid {
+            background: var(--navbar-solid);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+            border-bottom: 1px solid rgba(15, 23, 42, .08);
+        }
+
+        /* Anchor offset agar judul section tidak ketutup navbar */
+        [id] {
+            scroll-margin-top: calc(var(--header-h) + 12px);
+        }
+
+        /* HERO = 1 layar (tinggi viewport - tinggi navbar) */
+        .hero-fill {
+            min-height: calc(100vh - var(--header-h));
         }
 
         /* Highlight slider */
@@ -36,13 +72,13 @@
             color: #fff;
         }
 
-        @media (min-width: 992px) {
+        @media (min-width:992px) {
             .highlight-slide {
                 min-height: 72vh;
             }
         }
 
-        /* Social sidebar */
+        /* Sosmed sidebar (opsional) */
         .social-sidebar {
             position: fixed;
             right: 12px;
@@ -64,7 +100,7 @@
             color: #fff;
             text-decoration: none;
             box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
-            transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
             opacity: .95;
         }
 
@@ -75,27 +111,48 @@
         }
 
         .bg-facebook {
-            background: #1877F2;
+            background: #1877F2
         }
 
         .bg-instagram {
-            background: #C13584;
+            background: #C13584
         }
 
         .bg-youtube {
-            background: #FF0000;
+            background: #FF0000
         }
 
         .bg-tiktok {
-            background: #000;
+            background: #000
         }
 
-        @media (max-width: 767.98px) {
+        @media (max-width:767.98px) {
             .social-sidebar {
-                display: none;
+                display: none
             }
         }
+
+        /* Gambar konsisten untuk highlight */
+        .slide--1 {
+            --bg: url('assets/highlight/slide-1.jpg');
+        }
+
+        .slide--2 {
+            --bg: url('assets/highlight/slide-2.jpg');
+        }
     </style>
+
+    <!-- SEO JSON-LD -->
+    <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"NGO",
+    "name":"Yayasan ASIH",
+    "email":"mailto:aksisolidaritasindonesiahebat@gmail.com",
+    "telephone":"+62 851-1758-6391",
+    "address":{"@type":"PostalAddress","streetAddress":"Jl. Raya Cipayung No.1E","addressCountry":"ID"}
+  }
+  </script>
 </head>
 
 <body class="antialiased text-slate-800">
@@ -104,7 +161,6 @@
     <header id="topbar" class="fixed inset-x-0 top-0 z-50 transition-all">
         <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
-                <!-- Brand -->
                 <a href="#" class="flex items-center gap-3">
                     <img src="assets/logo-asih.png" alt="Logo Yayasan ASIH"
                         class="h-10 w-10 rounded-full ring-2 ring-white/50">
@@ -113,21 +169,20 @@
                         <p class="text-xs text-slate-500">Aksi Solidaritas Indonesia Hebat</p>
                     </div>
                 </a>
-                <!-- Menu -->
+
                 <div class="hidden md:flex items-center gap-8">
                     <a href="#pengenalan" class="hover:text-brand-600">Pengenalan</a>
                     <a href="#visi" class="hover:text-brand-600">Visi & Misi</a>
                     <a href="#tujuan" class="hover:text-brand-600">Tujuan</a>
                     <a href="#kegiatan" class="hover:text-brand-600">Kegiatan</a>
-                    <!-- DESKTOP MENU -->
                     <a href="#pendiri" class="hover:text-brand-600">Pendiri</a>
-
-                    <a href="#kontak"
+                    <a href="#kontak" class="hover:text-brand-600">Kontak</a>
+                    <a href="#donasi"
                         class="inline-flex items-center rounded-lg bg-brand-600 px-4 py-2 text-white hover:bg-brand-700">Donasi</a>
                 </div>
-                <!-- Hamburger -->
+
                 <button id="btnMobile"
-                    class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white"
+                    class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-slate-700"
                     aria-label="Open menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -137,25 +192,24 @@
                 </button>
             </div>
         </nav>
+
         <!-- mobile menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white/95 nav-blur border-t">
+        <div id="mobileMenu" class="hidden md:hidden bg-white/95 border-t">
             <div class="mx-auto max-w-7xl px-4 py-3 space-y-2">
                 <a href="#pengenalan" class="block py-2">Pengenalan</a>
                 <a href="#visi" class="block py-2">Visi & Misi</a>
                 <a href="#tujuan" class="block py-2">Tujuan</a>
                 <a href="#kegiatan" class="block py-2">Kegiatan</a>
-
-                <!-- MOBILE MENU -->
                 <a href="#pendiri" class="block py-2">Pendiri</a>
-                <a href="#kontak" class="block py-2 text-brand-700 font-semibold">Donasi</a>
+                <a href="#kontak" class="block py-2">Kontak</a>
+                <a href="#donasi" class="block py-2 text-brand-700 font-semibold">Donasi</a>
             </div>
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="relative isolate">
-        <div class="h-[72vh] min-h-[460px] w-full bg-center bg-cover" style="background-image:url('assets/hero.jpg')">
-        </div>
+    <!-- HERO (pas 1 layar) -->
+    <section class="relative isolate hero-fill">
+        <div class="absolute inset-0 bg-center bg-cover" style="background-image:url('assets/hero.jpg')"></div>
         <div class="absolute inset-0 bg-slate-900/60"></div>
         <div class="absolute inset-0 flex items-center">
             <div class="mx-auto max-w-5xl px-6 text-center text-white">
@@ -167,7 +221,7 @@
                     <a href="#visi"
                         class="rounded-xl bg-white px-5 py-3 font-semibold text-slate-900 hover:bg-slate-100 shadow-soft">Lihat
                         Program</a>
-                    <a href="#kontak"
+                    <a href="#donasi"
                         class="rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white hover:bg-brand-700 shadow-soft">Dukung
                         Kami</a>
                 </div>
@@ -191,23 +245,34 @@
                 <button type="button" data-bs-target="#highlightCarousel" data-bs-slide-to="1"
                     aria-label="Slide 2"></button>
             </div>
+
             <div class="carousel-inner">
-
-                <!-- Slide 1: Pusat Bantuan Hukum ASIH -->
+                <!-- Slide 1 -->
                 <div class="carousel-item active">
-                    <!-- ganti assets/slide-law.jpg -->
-                    <div class="highlight-slide d-flex align-items-center" style="--bg:url('assets/slide-law.jpg');">
-                        <div class="container">
-                            <div class="row justify-content-start">
-                                <div class="col-lg-7">
-                                    <div class="rounded-3 p-4 p-md-5 bg-white/80 shadow">
-                                        <span class="badge text-bg-danger mb-2">Highlight</span>
-                                        <h3 class="h1 fw-bold mb-3">Pusat Bantuan Hukum ASIH</h3>
-                                        <p class="lead mb-4">Menyediakan layanan konsultasi hukum <b>gratis</b> bagi
-                                            masyarakat yang menghadapi masalah hukum, khususnya kasus <b>perdata</b> dan
-                                            <b>pidana ringan</b>.
-                                        </p>
-                                        <a href="#kontak" class="btn btn-danger btn-lg">Konsultasi Gratis</a>
+                    <div class="highlight-slide slide--1 d-flex align-items-center">
+                        <div class="container-fluid px-4 px-lg-5 pr-16">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="max-w-[1200px] mx-auto">
+                                        <div class="rounded-3 p-4 p-md-5 bg-white/80 shadow">
+                                            <span class="badge text-bg-danger mb-2">Highlight</span>
+                                            <h3 class="h1 fw-bold mb-3">Pusat Bantuan Hukum ASIH</h3>
+                                            <p class="lead mb-4">
+                                                Menyediakan layanan konsultasi hukum <b>gratis</b> bagi masyarakat yang
+                                                menghadapi masalah hukum,
+                                                khususnya kasus <b>perdata</b> dan <b>pidana ringan</b>.
+                                            </p>
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                <a href="#kontak" class="btn btn-danger btn-lg">Konsultasi Gratis</a>
+                                                <!-- Tombol lihat foto -->
+                                                <button type="button" class="btn btn-outline-dark"
+                                                    data-photo-src="assets/highlight/slide-1.jpg"
+                                                    data-photo-alt="Pusat Bantuan Hukum ASIH"
+                                                    data-photo-caption="Dokumentasi kegiatan konsultasi hukum Yayasan ASIH.">
+                                                    Lihat Foto
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -215,29 +280,40 @@
                     </div>
                 </div>
 
-                <!-- Slide 2: Badan Gizi Nasional -->
+                <!-- Slide 2 -->
                 <div class="carousel-item">
-                    <!-- ganti assets/slide-nutrition.jpg -->
-                    <div class="highlight-slide d-flex align-items-center"
-                        style="--bg:url('assets/slide-nutrition.jpg');">
-                        <div class="container">
-                            <div class="row justify-content-end">
-                                <div class="col-lg-7">
-                                    <div class="rounded-3 p-4 p-md-5 bg-white/80 shadow">
-                                        <span class="badge text-bg-danger mb-2">Highlight</span>
-                                        <h3 class="h1 fw-bold mb-3">Badan Gizi Nasional</h3>
-                                        <p class="lead mb-4">Inisiatif peningkatan status gizi melalui edukasi gizi
-                                            seimbang, skrining balita & ibu hamil, serta dukungan bahan pangan bergizi
-                                            bagi keluarga rentan.</p>
-                                        <a href="#kontak" class="btn btn-danger btn-lg">Dukung Program</a>
+                    <div class="highlight-slide slide--2 d-flex align-items-center">
+                        <div class="container-fluid px-4 px-lg-5 pr-16">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="max-w-[1200px] mx-auto">
+                                        <div class="rounded-3 p-4 p-md-5 bg-white/80 shadow">
+                                            <span class="badge text-bg-danger mb-2">Highlight</span>
+                                            <h3 class="h1 fw-bold mb-3">Badan Gizi Nasional</h3>
+                                            <p class="lead mb-4">
+                                                Inisiatif peningkatan status gizi melalui edukasi gizi seimbang,
+                                                skrining balita & ibu hamil, serta dukungan bahan pangan bergizi bagi
+                                                keluarga rentan.
+                                            </p>
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                <a href="#donasi" class="btn btn-danger btn-lg">Dukung Program</a>
+                                                <!-- Tombol lihat foto -->
+                                                <button type="button" class="btn btn-outline-dark"
+                                                    data-photo-src="assets/highlight/slide-2.jpg"
+                                                    data-photo-alt="Program Badan Gizi Nasional"
+                                                    data-photo-caption="Edukasi gizi dan dukungan pangan bergizi dari Yayasan ASIH.">
+                                                    Lihat Foto
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
             <button class="carousel-control-prev" type="button" data-bs-target="#highlightCarousel" data-bs-slide="prev"
                 aria-label="Prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -249,6 +325,7 @@
         </div>
     </section>
 
+
     <!-- PENGENALAN -->
     <section id="pengenalan" class="py-16">
         <div class="mx-auto max-w-7xl px-6">
@@ -257,13 +334,13 @@
                     <h2 class="text-3xl font-bold tracking-tight mb-4">Yayasan ASIH</h2>
                     <p class="leading-relaxed text-slate-700">
                         Dibentuk sebagai respon terhadap kebutuhan nyata masyarakat, Yayasan ASIH menjembatani
-                        kesenjangan akses
-                        pendidikan, layanan sosial-kesehatan, dan keadilan; berfokus pada pembangunan holistik sosial,
-                        spiritual, dan intelektual.
+                        kesenjangan akses pendidikan,
+                        layanan sosial-kesehatan, dan keadilan; berfokus pada pembangunan holistik sosial, spiritual,
+                        dan intelektual.
                     </p>
                 </div>
                 <div class="relative">
-                    <img src="assets/hero.jpg" alt="Aktivitas Yayasan" class="rounded-2xl shadow-soft">
+                    <img src="assets/hero.jpg" alt="Aktivitas Yayasan" class="rounded-2xl shadow-soft" loading="lazy">
                     <img src="assets/logo-asih.png" alt="Logo"
                         class="absolute -right-4 -bottom-4 h-16 w-16 rounded-full ring-4 ring-white shadow-lg bg-white p-1">
                 </div>
@@ -351,6 +428,7 @@
                     </ul>
                 </div>
             </div>
+
             <div class="mt-6 grid gap-6 md:grid-cols-2">
                 <div class="rounded-2xl bg-white p-6 shadow-soft">
                     <h5 class="font-semibold text-lg">Pendidikan</h5>
@@ -372,7 +450,7 @@
         </div>
     </section>
 
-    <!-- PENDIRI / OWNER -->
+    <!-- PENDIRI -->
     <section id="pendiri" class="py-16">
         <div class="mx-auto max-w-7xl px-6">
             <div class="text-center mb-10">
@@ -381,99 +459,160 @@
                     dan gizi.</p>
                 <a href="struktur.html"
                     class="inline-flex items-center gap-2 mt-4 rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white hover:bg-brand-700 shadow-soft">
-                    <i class="bi bi-diagram-3"></i>
-                    Lihat Struktur Organisasi
+                    <i class="bi bi-diagram-3"></i> Lihat Struktur Organisasi
                 </a>
-
             </div>
 
             <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-                <!-- Card 1 -->
                 <article class="rounded-2xl bg-white p-6 shadow-soft border hover:shadow-lg transition">
                     <div class="flex flex-col items-center text-center">
                         <img src="assets/founder-1.jpg" alt="Nurudin, SE.,MM"
-                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow">
+                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow" loading="lazy">
                         <h4 class="mt-4 text-xl font-semibold">Nurudin, SE.,MM</h4>
                         <p class="text-brand-700 font-medium">Pendiri</p>
-                        <p class="mt-2 text-sm text-slate-600"></p>
-                        <!-- <div class="mt-3 flex items-center gap-3">
-                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="LinkedIn"><i
-                                    class="bi bi-linkedin fs-5"></i></a>
-                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Facebook"><i
-                                    class="bi bi-facebook fs-5"></i></a>
-                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Instagram"><i
-                                    class="bi bi-instagram fs-5"></i></a>
-                        </div> -->
                     </div>
                 </article>
-
-                <!-- Card 2 -->
                 <article class="rounded-2xl bg-white p-6 shadow-soft border hover:shadow-lg transition">
                     <div class="flex flex-col items-center text-center">
                         <img src="assets/founder-2.jpg" alt="Ahmad Sidik, ST"
-                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow">
+                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow" loading="lazy">
                         <h4 class="mt-4 text-xl font-semibold">Ahmad Sidik, ST</h4>
                         <p class="text-brand-700 font-medium">Pendiri</p>
-                        <!-- <p class="mt-2 text-sm text-slate-600">Fokus pada konsultasi hukum gratis untuk perdata & pidana
-                            ringan, edukasi hak sipil, dan advokasi.</p>
-                        <div class="mt-3 flex items-center gap-3">
-                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="LinkedIn"><i
-                                    class="bi bi-linkedin fs-5"></i></a>
-                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Facebook"><i
-                                    class="bi bi-facebook fs-5"></i></a>
-                            <a href="#" class="text-slate-500 hover:text-brand-600" aria-label="Instagram"><i
-                                    class="bi bi-instagram fs-5"></i></a>
-                        </div> -->
                     </div>
                 </article>
-
-                <!-- Card 3 -->
                 <article class="rounded-2xl bg-white p-6 shadow-soft border hover:shadow-lg transition">
                     <div class="flex flex-col items-center text-center">
                         <img src="assets/founder-3.jpg" alt="Wandoyo. S.H.,M.H"
-                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow">
+                            class="h-28 w-28 rounded-full object-cover ring-4 ring-white shadow" loading="lazy">
                         <h4 class="mt-4 text-xl font-semibold">Wandoyo. S.H.,M.H</h4>
                         <p class="text-brand-700 font-medium">Pendiri</p>
-
                     </div>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- CTA / KONTAK -->
+    <!-- DONASI -->
+    <section id="donasi" class="py-16 bg-white">
+        <div class="mx-auto max-w-5xl px-6">
+            <div class="rounded-2xl bg-slate-50 p-6 md:p-8 shadow-soft border">
+                <h3 class="text-3xl font-bold text-slate-900">Donasi</h3>
+                <p class="mt-2 text-slate-600">Salurkan donasi Anda ke rekening berikut (sesuaikan nomor rekening
+                    nyata):</p>
+
+                <!-- <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-xl bg-white p-5 ring-1 ring-slate-200">
+                        <p class="text-sm text-slate-500">Bank BRI</p>
+                        <p class="text-xl font-semibold tracking-wide">1234 5678 9012 345</p>
+                        <p class="text-sm text-slate-500">a.n. Yayasan ASIH</p>
+                    </div>
+                    <div class="rounded-xl bg-white p-5 ring-1 ring-slate-200">
+                        <p class="text-sm text-slate-500">Bank BCA</p>
+                        <p class="text-xl font-semibold tracking-wide">8888 7777 6666</p>
+                        <p class="text-sm text-slate-500">a.n. Yayasan ASIH</p>
+                    </div>
+                    <div class="rounded-xl bg-white p-5 ring-1 ring-slate-200">
+                        <p class="text-sm text-slate-500">Bank Mandiri</p>
+                        <p class="text-xl font-semibold tracking-wide">123-00-4567890-1</p>
+                        <p class="text-sm text-slate-500">a.n. Yayasan ASIH</p>
+                    </div>
+                    <div class="rounded-xl bg-white p-5 ring-1 ring-slate-200">
+                        <p class="text-sm text-slate-500">QRIS (Scan)</p>
+                        <p class="text-sm text-slate-500">Ganti gambar di <code>assets/qris.png</code> bila tersedia.
+                        </p>
+                    </div>
+                </div> -->
+
+                <!-- <div class="mt-6 flex items-center gap-4">
+                    <img src="assets/qris.png" alt="QRIS Yayasan ASIH"
+                        class="h-32 w-32 object-contain rounded-lg ring-1 ring-slate-200 bg-white" loading="lazy">
+                    <div class="text-sm text-slate-500">
+                        Konfirmasi donasi:
+                        <a href="mailto:aksisolidaritasindonesiahebat@gmail.com" class="text-brand-700 hover:underline">
+                            aksisolidaritasindonesiahebat@gmail.com
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTAK -->
     <section id="kontak" class="bg-slate-50 py-16">
-        <div class="mx-auto max-w-4xl px-6 text-center">
-            <h3 class="text-3xl font-bold">Mari Berkolaborasi</h3>
-            <p class="mt-3 text-slate-600">Bergabung sebagai relawan, mitra, atau donatur untuk memperluas dampak
-                program Yayasan ASIH.</p>
-            <form class="mt-6 grid gap-3 sm:grid-cols-3">
-                <input type="text" placeholder="Nama"
-                    class="col-span-1 rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-brand-500">
-                <input type="email" placeholder="Email"
-                    class="col-span-1 rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-brand-500">
-                <button
-                    class="col-span-1 rounded-xl bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700">Kirim</button>
-            </form>
+        <div class="mx-auto max-w-5xl px-6">
+            <div class="rounded-2xl bg-white p-6 md:p-8 shadow-soft">
+                <h3 class="text-3xl font-bold">Mari Berkolaborasi</h3>
+                <p class="mt-3 text-slate-600">Bergabung sebagai relawan, mitra, atau donatur untuk memperluas dampak
+                    program Yayasan ASIH.</p>
+
+                <form class="mt-6 grid gap-3 sm:grid-cols-3">
+                    <input type="text" placeholder="Nama"
+                        class="col-span-1 rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-brand-500">
+                    <input type="email" placeholder="Email"
+                        class="col-span-1 rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-brand-500">
+                    <button
+                        class="col-span-1 rounded-xl bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700">Kirim</button>
+                </form>
+
+                <div class="my-8 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+
+                <h4 class="text-xl font-semibold">Info Kontak</h4>
+                <ul class="mt-4 space-y-3 text-slate-700">
+                    <li class="flex items-start gap-3">
+                        <span
+                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 text-brand-600 shadow-sm"><i
+                                class="bi bi-geo-alt"></i></span>
+                        <span>Jl. Raya Cipayung No.1E</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span
+                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 text-brand-600 shadow-sm"><i
+                                class="bi bi-telephone"></i></span>
+                        <a href="tel:+6285117586391" class="hover:text-brand-700">0851-1758-6391</a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span
+                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 text-brand-600 shadow-sm"><i
+                                class="bi bi-envelope"></i></span>
+                        <a href="mailto:aksisolidaritasindonesiahebat@gmail.com"
+                            class="hover:text-brand-700">aksisolidaritasindonesiahebat@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="border-t bg-white">
-        <div class="mx-auto max-w-7xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <img src="assets/logo-asih.png" class="h-8 w-8 rounded-full" alt="Logo">
-                <span class="text-sm text-slate-600">© 2025 Yayasan ASIH. All rights reserved.</span>
+    <footer class="relative bg-gradient-to-b from-slate-50 to-white">
+        <div
+            class="absolute inset-x-0 -top-px h-[1px] bg-gradient-to-r from-transparent via-brand-500/40 to-transparent">
+        </div>
+        <div class="mx-auto max-w-7xl px-6 py-12">
+            <div class="grid gap-10 md:grid-cols-2 items-start">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <img src="assets/logo-asih.png" class="h-10 w-10 rounded-full ring-2 ring-white/70 shadow"
+                            alt="Logo">
+                        <div>
+                            <p class="font-semibold tracking-tight text-slate-900">Yayasan ASIH</p>
+                            <p class="text-sm text-slate-500">Aksi Solidaritas Indonesia Hebat</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-500">© 2025 Yayasan ASIH. All rights reserved.</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold tracking-wide text-slate-900">Informasi</h4>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <a href="#" class="text-sm text-slate-600 hover:text-brand-700">Kebijakan Privasi</a>
+                        <a href="#" class="text-sm text-slate-600 hover:text-brand-700">Syarat & Ketentuan</a>
+                    </div>
+                </div>
             </div>
-            <div class="d-none d-md-flex align-items-center gap-2">
-                <a href="#" class="text-muted small text-decoration-none">Kebijakan Privasi</a>
-                <span class="text-muted">•</span>
-                <a href="#" class="text-muted small text-decoration-none">Syarat & Ketentuan</a>
-            </div>
+            <div class="mt-10 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
         </div>
     </footer>
 
-    <!-- SIDEBAR SOSIAL -->
+    <!-- SIDEBAR SOSIAL (hapus blok ini jika tidak diperlukan) -->
     <div class="social-sidebar" aria-label="Ikon media sosial">
         <a href="#" class="bg-facebook" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-title="Facebook"
             aria-label="Facebook">
@@ -493,28 +632,89 @@
         </a>
     </div>
 
-    <!-- Bootstrap JS (wajib untuk slider & tooltip) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Navbar effect
+        document.addEventListener('DOMContentLoaded', function () {
+            const photoModalEl = document.getElementById('photoModal');
+            if (!photoModalEl) return;
+
+            const photoModal = new bootstrap.Modal(photoModalEl);
+            const imgTag = document.getElementById('photoModalImg');
+            const srcWebp = document.getElementById('photoModalSourceWebp');
+            const titleEl = document.getElementById('photoModalLabel');
+            const captionEl = document.getElementById('photoModalCaption');
+            const dlBtn = document.getElementById('photoDownload');
+
+            document.querySelectorAll('[data-photo-src]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const jpg = btn.getAttribute('data-photo-src');
+                    const webp = btn.getAttribute('data-photo-webp') || '';
+                    const alt = btn.getAttribute('data-photo-alt') || 'Foto highlight';
+                    const cap = btn.getAttribute('data-photo-caption') || '';
+
+                    imgTag.src = jpg;
+                    imgTag.alt = alt;
+                    srcWebp.srcset = webp;
+                    titleEl.textContent = alt;
+                    captionEl.textContent = cap;
+
+                    dlBtn.href = jpg;
+                    dlBtn.download = (alt.trim().toLowerCase().replace(/\s+/g, '-') || 'foto') + '.jpg';
+
+                    photoModal.show();
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+
         const bar = document.getElementById('topbar');
         const menu = document.getElementById('mobileMenu');
         const btn = document.getElementById('btnMobile');
+
         const setBar = () => {
-            if (window.scrollY > 10) {
-                bar.classList.add('bg-white/90', 'shadow', 'nav-blur');
-                bar.classList.remove('bg-transparent', 'text-white');
-            } else {
-                bar.classList.remove('shadow', 'bg-white/90');
-                bar.classList.add('bg-transparent');
-            }
+            const atTop = window.scrollY <= 10;
+            bar.classList.toggle('header-glass', atTop);
+            bar.classList.toggle('header-solid', !atTop);
         };
-        setBar(); window.addEventListener('scroll', setBar);
+
+        const setHeaderVar = () => {
+            document.documentElement.style.setProperty('--header-h', bar.offsetHeight + 'px');
+        };
+
+        setBar(); setHeaderVar();
+        window.addEventListener('scroll', setBar);
+        window.addEventListener('resize', setHeaderVar);
         btn?.addEventListener('click', () => menu.classList.toggle('hidden'));
 
-        // Tooltip init
+        // Tooltip Bootstrap
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
     </script>
+    <!-- Modal Foto -->
+    <div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-black">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white" id="photoModalLabel">Foto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <picture id="photoModalPicture" class="w-100 d-block">
+                        <source id="photoModalSourceWebp" type="image/webp">
+                        <img id="photoModalImg" class="w-100 h-auto d-block" alt="Foto highlight">
+                    </picture>
+                </div>
+                <div class="modal-footer border-0 justify-content-between">
+                    <small class="text-white-50" id="photoModalCaption"></small>
+                    <a id="photoDownload" href="#" class="btn btn-light" download>Unduh</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
